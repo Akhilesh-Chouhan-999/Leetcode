@@ -5,7 +5,8 @@ class Solution {
 public:
     bool checkValid(string code){
 
-        if(code.empty()) return false ; 
+        if(code.empty())
+         return false ; 
 
         for(char &ch : code){
 
@@ -28,10 +29,10 @@ public:
 
             unordered_map<string , int>mpp = {
 
-                {"electronics",1} ,
-                {"grocery", 2 },
-                {"pharmacy",3 },
-                {"restaurant",4}
+                {"ELECTRONICS",1} ,
+                {"GROCERY", 2 },
+                {"PHARMACY",3 },
+                {"RESTAURANT",4}
              } ; 
 
             for(int i = 0 ; i < n ; i ++){
@@ -40,10 +41,10 @@ public:
                 string bsLine = businessLine[i] ; 
                 bool flag = isActive[i] ; 
 
-                if(!flag || !checkValid(code) || !mpp.count(bsLine)) continue ;
+                if(!flag || !checkValid(code) || !mpp.count(bsLine)) 
+                continue ;
 
                 vec.push_back({mpp[bsLine] , code}) ; 
-
             }
 
             sort(begin(vec) , end(vec)) ; 
