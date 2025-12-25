@@ -1,21 +1,58 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int maxFreeTime(int eventTime, int k, vector<int>& startTime, vector<int>& endTime) {
+    int maxFreeTime(int eventTime, int k, vector<int> &startTime, vector<int> &endTime)
+    {
 
-        vector<int>FreeSpaces(eventTime , 0) ;
+        int n = startTime.size();
 
+        vector<int> spaceArray;
+
+        int prevEndTime = 0;
+
+        for (int t = 0; t < n; t++)
+        {
+            int currStartTime = startTime[t];
+            int currEndTime = endTime[t];
+
+            spaceArray.push_back(currStartTime - prevEndTime);
+
+            prevEndTime = currEndTime;
+        }
+            spaceArray.push_back(eventTime - prevEndTime);
         
-       
+
+        int result = 0;
+        int i = 0;
+
+        int sum = 0;
+        for (int j = 0; j < spaceArray.size(); j++)
+        {
+            sum += spaceArray[j];
+
+            while (j - i + 1 > k + 1)
+            {
+
+                sum -= spaceArray[i];
+                i++;
+            }
+
+            result = max(result, sum);
+        }
+
+        return result;
     }
 };
 
-int main() {
+int main()
+{
     Solution obj;
 
-    struct TestCase {
+    struct TestCase
+    {
         int eventTime;
         int k;
         vector<int> startTime;
@@ -48,10 +85,10 @@ int main() {
         {20, 2, {1, 2, 15}, {2, 3, 16}, 12},
 
         // All meetings cover full event
-        {5, 3, {0, 1, 2, 3, 4}, {1, 2, 3, 4, 5}, 0}
-    };
+        {5, 3, {0, 1, 2, 3, 4}, {1, 2, 3, 4, 5}, 0}};
 
-    for (int i = 0; i < tests.size(); i++) {
+    for (int i = 0; i < tests.size(); i++)
+    {
         cout << "Test Case " << i + 1 << ":\n";
         cout << "Output = "
              << obj.maxFreeTime(
@@ -64,3 +101,6 @@ int main() {
 
     return 0;
 }
+
+// Time Complexity : O(n)
+// Space Complexity : O(n)
