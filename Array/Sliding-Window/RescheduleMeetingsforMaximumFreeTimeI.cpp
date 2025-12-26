@@ -22,7 +22,8 @@ public:
 
             prevEndTime = currEndTime;
         }
-            spaceArray.push_back(eventTime - prevEndTime);
+            
+        spaceArray.push_back(eventTime - prevEndTime);
         
 
         int result = 0;
