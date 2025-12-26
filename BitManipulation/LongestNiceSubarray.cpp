@@ -46,6 +46,12 @@ int main() {
 
 
 /*
-OR (|): Used to track presence of bits; safe without conditions
-XOR (^): Used to remove bits; safe only when bit overlap is guaranteed not to exist
+OR (|):
+Used to track the presence of bits in a mask; safe to use without conditions, as it never removes information.
+
+XOR (^):
+Used to remove bits from a mask; safe only when bit overlap is guaranteed not to exist, ensuring each bit belongs to exactly one element.
+
+AND (&):
+Used to detect bit overlap; determines whether two numbers share any common set bit.
 */
