@@ -125,3 +125,7 @@ int main() {
 
     return 0;
 }
+
+
+// Time Complexity : O( N * 32 ) where n is the length of bank 
+// Space Complexity : O(n)  
