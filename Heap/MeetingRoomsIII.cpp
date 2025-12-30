@@ -7,23 +7,23 @@ public:
 
     int mostBooked(int n, vector<vector<int>> &meetings){
 
-        sort(begin(meetings), end(meetings));
+        sort(begin(meetings), end(meetings)); // m*log(m)
         priority_queue<int, vector<int>, greater<int>> freeRooms; // freeRooms index 
 
-        for(int i = 0 ; i < n ; i ++ ){
+        for(int i = 0 ; i < n ; i ++ ){  // n*log(n)
             freeRooms.push(i) ;
         }
 
         priority_queue<pair<ll, int>, vector<pair<ll, int>>, greater<pair<ll, int>>> busyRoom; // endTime , room 
-        vector<int>counts(n , 0) ; 
+        vector<int>counts(n , 0) ; // space O(n)
 
-        for(vector<int >meeting : meetings ){
+        for(vector<int >meeting : meetings ){ // O(m)
 
             int start = meeting[0] ; 
             int end = meeting[1]  ; 
             int duration = end - start ; 
 
-            while(!busyRoom.empty() && busyRoom.top().first <= start){
+            while(!busyRoom.empty() && busyRoom.top().first <= start){ //  O(log(n))
                  long long endTime = busyRoom.top().first ; 
                  int room = busyRoom.top().second ; 
 
@@ -133,3 +133,7 @@ int main()
 
     return 0;
 }
+
+
+// Time Complexity :  O(M*log(n))
+// Space Complexity : O( n)
