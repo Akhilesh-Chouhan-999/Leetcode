@@ -17,9 +17,9 @@ public:
 
         k = k % temp.size() ; 
 
-        reverse(temp.begin() , temp.end()) ; 
-        reverse(temp.begin() , temp.begin() + k) ;
-        reverse(temp.begin() + k , temp.end()) ; 
+        reverse(temp.begin() , temp.begin() + k) ; 
+        reverse(temp.begin()  + k , temp.end()) ;
+        reverse(temp.begin()  ,temp.end() ) ; 
 
 
         vector<int>result ; 
