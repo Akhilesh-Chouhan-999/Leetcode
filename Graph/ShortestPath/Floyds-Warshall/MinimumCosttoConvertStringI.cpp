@@ -3,6 +3,7 @@ using namespace std;
 
 class Solution {
 public:
+
     using ll = long long ; 
 
     void floydsWarshall(vector<vector<ll>>&adjMatrix , 
@@ -106,3 +107,6 @@ int main() {
 
     return 0;
 }
+
+// Time Complexity : O(n)
+// Space Complexity : O(1)
