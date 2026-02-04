@@ -9,14 +9,21 @@ public:
 
         int index = 0 ; 
 
-        while(nums[index] < nums[index+1] && index < n - 1)
-        index ++ ; 
+        while( index < n - 1  && nums[index] < nums[index + 1]) index ++ ;
 
-        if(index == 0 || index == n - 1) return false ; 
+        if(index == 0 || index >= n - 1 ) return false ;
+
+        while(index < n - 1 && nums[index] > nums[index + 1]) index ++ ; 
+
+        if(index >= n - 1 ) return false ; 
+
+        while(index < n - 1 && nums[index] < nums[index+1]) index ++ ; 
+
+        if(index == n - 1) 
+        return true ; 
 
 
-
-
+        return false ; 
     }
 };
 
