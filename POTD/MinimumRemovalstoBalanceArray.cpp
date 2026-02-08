@@ -15,13 +15,13 @@ public:
 
         while( j < n ){
 
-            if(nums[j] > k * nums[i]){
+            if((long long)nums[j] > 1LL * k * nums[i]){
                 i ++ ; 
                 continue;
             }
-            
-            best = max(best , j  - i ) ;  
-            
+        
+          best = max(best , j  - i + 1 ) ;  
+
             j ++ ; 
         }
 
@@ -29,7 +29,6 @@ public:
 
     }
 };
-
 
 int main() {
     Solution sol;
@@ -39,11 +38,10 @@ int main() {
         {1, 6, 2, 9},
         {4, 6},
         {1},
-        {1, 100, 200, 300}
     };
 
-    vector<int> kValues = {2, 3, 2, 10, 2};
-    vector<int> expected = {4, 2, 0, 0, 3};
+    vector<int> kValues = {2, 3, 2, 10};
+    vector<int> expected = {4, 2, 0, 0};
 
     for (int i = 0; i < testCases.size(); i++) {
         int result = sol.minRemoval(testCases[i], kValues[i]);

@@ -111,6 +111,5 @@ int main() {
 }
 
 
-// Time Complexity : O(n * 32)
+// Time Complexity : O(log(n))
 // Space Complexity : O(1)
-
