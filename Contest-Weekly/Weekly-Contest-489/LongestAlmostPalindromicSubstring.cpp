@@ -5,9 +5,10 @@ class Solution {
 public:
     int almostPalindromic(string s){
 
-        int n = s.length() ; 
-
+        int n = s.length() ;
         
+
+
     }
 };
 

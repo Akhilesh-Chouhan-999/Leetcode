@@ -12,35 +12,48 @@ struct TreeNode {
 
 class Solution {
 public:
+     
+   int maxDifference  ; 
 
-    int result = INT_MIN ; 
+    void calculateDiff(TreeNode *root , TreeNode* child){
 
-    int dfs(TreeNode* root ){
-
-        if(!root->left && !root->right){
-            return 0 ; 
+        if(!root || !child){
+            return ; 
         }
 
-        int value = INT_MAX  ; 
+        maxDifference = max(maxDifference , abs(root->val - child->val))  ;
 
-        value = min(value , dfs(root ->left)) ; 
-        value = min(value , dfs(root->right)) ; 
+        calculateDiff(root , child->left) ;
+        calculateDiff(root , child->right) ; 
 
-        result = max(result , root->val - value) ; 
+        return ; 
 
-        // Go in left subtree 
+    }
+    void dfs(TreeNode *root ){
 
-        dfs(root -> left) ; 
-        dfs(root -> right) ; 
+        if(!root) return ;
 
-        return result ; 
+        calculateDiff(root , root->left ) ; 
+        calculateDiff(root , root->right) ; 
 
-       
+        dfs(root->left) ; 
+        dfs(root->right) ; 
+
+
+        return  ; 
+
+
     }
 
 
     int maxAncestorDiff(TreeNode* root){
 
+        maxDifference = INT_MIN ; 
+
+        dfs(root) ; 
+
+        return maxDifference ; 
+ 
     }
 };
 
