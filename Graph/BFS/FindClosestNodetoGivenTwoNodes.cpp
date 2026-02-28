@@ -1,13 +1,46 @@
 #include <bits/stdc++.h>
 using namespace std;
-
 class Solution {
 public:
+
+    void dfs(vector<int>& edges, int u, int step, vector<int>& dist) {
+        if (u == -1) return;
+        if (dist[u] != -1) return;  
+
+
+        dist[u] = step;
+        dfs(edges, edges[u], step + 1, dist);
+    }
+
     int closestMeetingNode(vector<int>& edges, int node1, int node2) {
-     
+
+        int n = edges.size();
+
+        vector<int> dist1(n, -1);
+        vector<int> dist2(n, -1);
+
+        dfs(edges, node1, 0, dist1);
+        dfs(edges, node2, 0, dist2);
+
+        int answer = -1;
+        int minDistance = INT_MAX;
+
+        for (int i = 0; i < n; i++) {
+
+            if (dist1[i] != -1 && dist2[i] != -1) {
+
+                int currMax = max(dist1[i], dist2[i]);
+
+                if (currMax < minDistance) {
+                    minDistance = currMax;
+                    answer = i;
+                }
+            }
+        }
+
+        return answer;
     }
 };
-
 int main() {
     Solution sol;
 

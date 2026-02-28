@@ -7,9 +7,48 @@ public:
                            vector<vector<int>>& edges,
                            vector<int>& queries){
 
-                
 
-                           }
+        vector<int>inDegree(n+1 , 0) ; 
+
+        for(vector<int>&edge : edges){
+
+            int u = edge[0] ;
+            int v = edge[1] ; 
+
+            if( u < v ){
+                inDegree[u] ++ ; 
+                inDegree[v] ++ ; 
+            }
+        }
+
+        vector<int>validPairs ;
+
+        for(int i = 0 ; i <= n ; i ++ ){
+            for(int j = i + 1 ; j <= n ; j ++ ){
+
+                int a = inDegree[i] ; 
+                int b = inDegree[j] ; 
+
+                validPairs.push_back(a+b) ; 
+
+            }
+        }
+
+        vector<int>result ;  
+
+        for(int query : queries){
+
+            for(int pair : validPairs){
+
+                if(pair >= query){
+                    result.push_back(pair) ;
+                }
+            }
+        }
+
+                return result ; 
+
+        }
 };
 
 void printVector(const vector<int>& v) {
