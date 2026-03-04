@@ -91,7 +91,7 @@ public:
         if(memo[n][aliceTurn] != -1)
         return memo[n][aliceTurn] ;
 
-        for(int i = 1 ; i < n ; i ++ ){
+        for(int i = 1 ; i*i < n ; i ++ ){
            
             if( n % i == 0 ){
 
@@ -153,5 +153,5 @@ int main() {
 }
 
 
-// Time Complexity : O(n ^ 2)
+// Time Complexity : O(n * root(n))
 // Space Complexity : O(n)
