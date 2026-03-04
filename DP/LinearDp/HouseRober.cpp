@@ -16,7 +16,6 @@ public:
         int take = num[idx] + solve(num , idx + 2) ; 
         int skip =  solve(num , idx + 1) ; 
 
-
         return max(take , skip) ; 
 
 
