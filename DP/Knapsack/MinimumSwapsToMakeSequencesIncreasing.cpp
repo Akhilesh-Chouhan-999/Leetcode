@@ -5,14 +5,9 @@ class Solution {
 public:
 
   
-    int solve(vector<int>&nums1 , vector<int>&nums2 , int idx ){
-
-    }
     int minSwap(vector<int>& nums1, vector<int>& nums2){
 
-        int n = nums1.size() ; 
 
-        return solve(nums1 , nums2 , n  - 1  ) ;
     }
 };
 
