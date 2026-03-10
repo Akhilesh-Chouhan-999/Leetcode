@@ -1,0 +1,22 @@
+// Basic health-check test for {{ service_name }} service
+// Run with: npm test
+
+const http = require('http');
+
+describe('{{ service_name }} service', () => {
+  const PORT = process.env.PORT || {{ port }};
+  const BASE = `http://localhost:${PORT}`;
+
+  test('GET /health returns { status: "ok" }', done => {
+    http.get(`${BASE}/health`, res => {
+      let body = '';
+      res.on('data', chunk => { body += chunk; });
+      res.on('end', () => {
+        const json = JSON.parse(body);
+        expect(json.status).toBe('ok');
+        expect(json.service).toBe('{{ service_name }}');
+        done();
+      });
+    }).on('error', done);
+  });
+});
