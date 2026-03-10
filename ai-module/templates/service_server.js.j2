@@ -1,0 +1,76 @@
+// {{ service_name | title }} Service
+const express = require('express');
+const { Pool } = require('pg');
+
+const app = express();
+const port = process.env.PORT || {{ port }};
+
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+
+app.use(express.json());
+
+// Health check
+app.get('/health', (_req, res) => res.json({ status: 'ok', service: '{{ service_name }}' }));
+
+// List all {{ service_name }} resources
+app.get('/api/{{ service_name }}s', async (_req, res) => {
+  try {
+    const { rows } = await pool.query('SELECT * FROM {{ service_name }}s ORDER BY id');
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Get a single {{ service_name }} by id
+app.get('/api/{{ service_name }}s/:id', async (req, res) => {
+  try {
+    const { rows } = await pool.query('SELECT * FROM {{ service_name }}s WHERE id = $1', [req.params.id]);
+    if (!rows.length) return res.status(404).json({ error: 'Not found' });
+    res.json(rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Create a {{ service_name }}
+app.post('/api/{{ service_name }}s', async (req, res) => {
+  try {
+    const { name, description } = req.body;
+    const { rows } = await pool.query(
+      'INSERT INTO {{ service_name }}s (name, description) VALUES ($1, $2) RETURNING *',
+      [name, description]
+    );
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Update a {{ service_name }}
+app.put('/api/{{ service_name }}s/:id', async (req, res) => {
+  try {
+    const { name, description } = req.body;
+    const { rows } = await pool.query(
+      'UPDATE {{ service_name }}s SET name=$1, description=$2 WHERE id=$3 RETURNING *',
+      [name, description, req.params.id]
+    );
+    if (!rows.length) return res.status(404).json({ error: 'Not found' });
+    res.json(rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Delete a {{ service_name }}
+app.delete('/api/{{ service_name }}s/:id', async (req, res) => {
+  try {
+    const { rowCount } = await pool.query('DELETE FROM {{ service_name }}s WHERE id=$1', [req.params.id]);
+    if (!rowCount) return res.status(404).json({ error: 'Not found' });
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.listen(port, () => console.log(`{{ service_name }} service listening on port ${port}`));

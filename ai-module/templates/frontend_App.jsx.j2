@@ -1,0 +1,102 @@
+{% raw %}import React, { useEffect, useState } from 'react';
+
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+
+function App() {
+  const [items, setItems] = useState([]);
+  const [form, setForm]   = useState({ name: '', description: '' });
+  const [error, setError] = useState(null);{% endraw %}
+
+  const [svcName] = useState('{{ first_service }}');
+{% raw %}
+  const endpoint = `${API_URL}/api/${svcName}s`;
+
+  useEffect(() => { fetchItems(); }, []);
+
+  async function fetchItems() {
+    try {
+      const res = await fetch(endpoint);
+      if (!res.ok) throw new Error(await res.text());
+      setItems(await res.json());
+    } catch (e) { setError(e.message); }
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error(await res.text());
+      setForm({ name: '', description: '' });
+      fetchItems();
+    } catch (e) { setError(e.message); }
+  }
+
+  async function handleDelete(id) {
+    try {
+      await fetch(`${endpoint}/${id}`, { method: 'DELETE' });
+      fetchItems();
+    } catch (e) { setError(e.message); }
+  }
+
+  return (
+    <div style={{ fontFamily: 'sans-serif', maxWidth: 700, margin: '2rem auto', padding: '0 1rem' }}>{% endraw %}
+      <h1>{{ project_name | title }} – {{ first_service | title }} Manager</h1>
+{% raw %}
+      {error && (
+        <p style={{ color: 'red', border: '1px solid red', padding: '0.5rem' }}>
+          {error}
+          <button onClick={() => setError(null)} style={{ marginLeft: '1rem' }}>✕</button>
+        </p>
+      )}
+
+      <form onSubmit={handleSubmit} style={{ marginBottom: '1.5rem' }}>
+        <input
+          placeholder="Name"
+          value={form.name}
+          onChange={e => setForm({ ...form, name: e.target.value })}
+          required
+          style={{ marginRight: '0.5rem', padding: '0.4rem' }}
+        />
+        <input
+          placeholder="Description"
+          value={form.description}
+          onChange={e => setForm({ ...form, description: e.target.value })}
+          style={{ marginRight: '0.5rem', padding: '0.4rem', width: '260px' }}
+        />
+        <button type="submit" style={{ padding: '0.4rem 1rem' }}>Add</button>
+      </form>
+
+      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <thead>
+          <tr style={{ background: '#f0f0f0' }}>
+            <th style={{ padding: '0.5rem', textAlign: 'left' }}>ID</th>
+            <th style={{ padding: '0.5rem', textAlign: 'left' }}>Name</th>
+            <th style={{ padding: '0.5rem', textAlign: 'left' }}>Description</th>
+            <th style={{ padding: '0.5rem', textAlign: 'left' }}>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map(item => (
+            <tr key={item.id} style={{ borderBottom: '1px solid #ddd' }}>
+              <td style={{ padding: '0.5rem' }}>{item.id}</td>
+              <td style={{ padding: '0.5rem' }}>{item.name}</td>
+              <td style={{ padding: '0.5rem' }}>{item.description}</td>
+              <td style={{ padding: '0.5rem' }}>
+                <button onClick={() => handleDelete(item.id)} style={{ color: 'red' }}>Delete</button>
+              </td>
+            </tr>
+          ))}
+          {items.length === 0 && (
+            <tr><td colSpan={4} style={{ textAlign: 'center', padding: '1rem', color: '#888' }}>No items yet.</td></tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export default App;{% endraw %}

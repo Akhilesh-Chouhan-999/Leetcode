@@ -1,0 +1,20 @@
+-- Auto-increment trigger to keep updated_at current
+CREATE OR REPLACE FUNCTION set_updated_at()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$;
+
+CREATE TABLE IF NOT EXISTS {{ service_name }}s (
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(255) NOT NULL,
+    description TEXT,
+    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TRIGGER trg_{{ service_name }}s_updated_at
+BEFORE UPDATE ON {{ service_name }}s
+FOR EACH ROW EXECUTE FUNCTION set_updated_at();

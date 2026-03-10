@@ -1,0 +1,22 @@
+// API Gateway – routes requests to the correct microservice
+const express = require('express');
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
+const app = express();
+const port = process.env.PORT || 8080;
+
+// Health check
+app.get('/health', (_req, res) => res.json({ status: 'ok', service: 'api-gateway' }));
+
+// Route table  –  /api/<service>s  →  http://<service>:<port>
+const routes = [
+{% for svc in services %}
+  { prefix: '/api/{{ svc.name }}s', target: 'http://{{ svc.name }}:{{ svc.port }}' },
+{% endfor %}
+];
+
+routes.forEach(({ prefix, target }) => {
+  app.use(prefix, createProxyMiddleware({ target, changeOrigin: true }));
+});
+
+app.listen(port, () => console.log(`API Gateway listening on port ${port}`));
